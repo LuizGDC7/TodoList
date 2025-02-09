@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Categoria implements Propertie<String> {
-    private List<String> categorias = new ArrayList<>(Arrays.asList("Trabalho", "Faculdade", "Tarefas Domésticas", "Planos"));
+    private List<String> categorias = new ArrayList<>(Arrays.asList("Trabalho", "Faculdade", "Tarefas Domésticas", "Planos", "Lazer"));
 
 //    public Categoria(ArrayList<String> categorias) {
 //        categorias = new ArrayList<>();

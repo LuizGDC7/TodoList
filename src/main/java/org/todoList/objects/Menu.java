@@ -154,13 +154,14 @@ public class Menu {
         String nome = null, descricao = null, categoriaEscolhida = null;
         Date data = null;
         Integer prioridade = null;
+        SimpleDateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         while(true){
 
             System.out.println("Dados inseridos até agora: \n\n" +
                     "nome: " + (nome == null ? "" : nome) + "\n" +
                     "descricao: " + (descricao == null ? "" : descricao) + "\n" +
-                    "Data: " + (data == null ? "" : data) + "\n" +
+                    "Data: " + (data == null ? "" : dataFormat.format(data)) + "\n" +
                     "prioridade: " + (prioridade == null ? "" : prioridade) + "\n" +
                     "categoria:" + (categoriaEscolhida == null ? "" : categoriaEscolhida)
                     );

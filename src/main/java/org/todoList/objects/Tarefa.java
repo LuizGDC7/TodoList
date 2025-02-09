@@ -1,6 +1,7 @@
 package org.todoList.objects;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -84,9 +85,12 @@ public class Tarefa implements Comparable<Tarefa> {
 
     @Override
     public String toString() {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
          return "\nNome: " + getNome() +
                 "\nDescrição: " + getDescricao() +
-                "\nData final: " + getDataTermino() +
+                "\nData final: " + sdf.format(getDataTermino()) +
                 "\nPrioridade: " + getPrioridade() +
                 "\nCategoria: " + getCategoria() +
                 "\nStatus: " + getStatus().getStatusWithColor() +
