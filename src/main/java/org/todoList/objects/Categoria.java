@@ -1,10 +1,12 @@
 package org.todoList.objects;
 
+import org.todoList.interfaces.Propertie;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Categoria {
+public class Categoria implements Propertie<String> {
     private List<String> categorias = new ArrayList<>(Arrays.asList("Trabalho", "Faculdade", "Tarefas Domésticas", "Planos"));
 
 //    public Categoria(ArrayList<String> categorias) {
@@ -33,13 +35,17 @@ public class Categoria {
         }
     }
 
-    public boolean categoriaValida(String candidata){
-        for (String categoria : this.categorias) {
-            if (candidata.equals(categoria)) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean categoriaValida(String candidata){
+//        for (String categoria : this.categorias) {
+//            if (candidata.equals(categoria)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
+    @Override
+    public boolean validarPropriedade(String candidato) {
+        return this.categorias.contains(candidato);
+    }
 }

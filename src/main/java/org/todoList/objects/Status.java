@@ -1,8 +1,10 @@
 package org.todoList.objects;
 
+import org.todoList.interfaces.Propertie;
+
 import java.util.HashMap;
 
-public class Status implements Comparable<Status> {
+public class Status implements Comparable<Status>, Propertie<String> {
     public static final String TODO = "To do";
     public static final String DOING = "Doing";
     public static final String DONE = "Done";
@@ -60,4 +62,16 @@ public class Status implements Comparable<Status> {
 
         return Integer.compare(myStatusNumber, otherStatusNumber);
     }
+
+    @Override
+    public boolean validarPropriedade(String objeto){
+        String[] valores = {TODO, DOING, DONE};
+        for (String valor : valores) {
+            if (valor.equalsIgnoreCase(objeto)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

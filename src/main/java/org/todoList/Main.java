@@ -24,7 +24,7 @@ public class Main {
         );
         while (true) {
             int escolha = menu.opcoes();
-            if (escolha == 10) {
+            if (escolha == 0) {
                 break;
             }
             menu.executarOpcao(escolha, menu, tarefas, categoria);

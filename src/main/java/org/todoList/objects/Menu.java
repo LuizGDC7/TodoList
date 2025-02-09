@@ -1,9 +1,12 @@
 package org.todoList.objects;
 
+import org.todoList.interfaces.Propertie;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Menu {
 
@@ -19,19 +22,19 @@ public class Menu {
 
     public int opcoes(){
 
-
         System.out.println(
                 "\n"+
+                "0 - Sair\n" +
                 "1 - Adicionar nova tarefa\n" +
                 "2 - Deletar tarefa\n" +
                 "3 - Vizualizar tarefas\n" +
                 "4 - Vizualizar categorias\n" +
                 "5 - Adicionar categoria\n" +
-                "6 - Ordenar por prioridade\n" +
-                "7 - Listar tarefas por Categoria\n" +
-                "8 - Listar tarefas por Prioridade\n" +
-                "9 - Listar tarefas por Status\n" +
-                "10 - Sair\n"
+                "6 - Listar tarefas por Categoria\n" +
+                "7 - Listar tarefas por Prioridade\n" +
+                "8 - Listar tarefas por Status\n" +
+                "9 - Ordenar por prioridade\n" +
+                "10 - Ordenar por Status\n"
         );
 
         int escolha = 0;
@@ -39,12 +42,12 @@ public class Menu {
         while(true){
             try {
                 escolha = Integer.parseInt(input.nextLine());
-                if(escolha <= 0 || escolha > 10){
+                if(escolha < 0 || escolha > 11){
                     throw new java.lang.RuntimeException("\nErro\n");
                 }
                 break;
             }catch(Exception e){
-                System.out.println("\nPor favor, escolha um número entre 1 e 9\n");
+                System.out.println("\nPor favor, escolha um número entre 0 e 11\n");
             }
         }
 
@@ -157,9 +160,9 @@ public class Menu {
             System.out.println("Dados inseridos até agora: \n\n" +
                     "nome: " + (nome == null ? "" : nome) + "\n" +
                     "descricao: " + (descricao == null ? "" : descricao) + "\n" +
-                    "categoria:" + (categoriaEscolhida == null ? "" : categoriaEscolhida) + "\n" +
+                    "Data: " + (data == null ? "" : data) + "\n" +
                     "prioridade: " + (prioridade == null ? "" : prioridade) + "\n" +
-                    "Data: " + (data == null ? "" : data) + "\n"
+                    "categoria:" + (categoriaEscolhida == null ? "" : categoriaEscolhida)
                     );
 
             switch(opcoesTarefa()){
@@ -235,7 +238,7 @@ public class Menu {
         while(true){
             try{
                 categoriaEscolhida = input.nextLine();
-                if(categoria.categoriaValida(categoriaEscolhida)){
+                if(categoria.validarPropriedade(categoriaEscolhida)){
                     return categoriaEscolhida;
                 }
                 System.out.println("\nDigite uma categoria válida\n");
@@ -245,31 +248,78 @@ public class Menu {
         }
     }
 
-    public void listarPorCategoria(ArrayList<Tarefa> listaTarefa, String categoria){
+    public void ordenarPorPrioridade(ArrayList<Tarefa> listaTarefa){
+        Collections.sort(listaTarefa, Comparator.comparing(Tarefa::getPrioridade).reversed());
+    }
+
+    public void ordenarPorStatus(ArrayList<Tarefa> listaTarefa){
+        Collections.sort(listaTarefa, Comparator.comparing(Tarefa::getStatus).reversed());
+    }
+
+    public void listarPorCategoria(ArrayList<Tarefa> listaTarefa, Categoria categoria){
+
+        String escolha = obterCategoriaDesejada(categoria);
+
         List<Tarefa> resultado = listaTarefa.stream()
-                .filter(tarefa -> tarefa.getCategoria().equalsIgnoreCase(categoria))
+                .filter(tarefa -> tarefa.getCategoria().equalsIgnoreCase(escolha))
                 .collect(Collectors.toList());
 
         resultado.forEach(System.out::println);
     }
 
     public void listarPorPrioridade(ArrayList<Tarefa> listaTarefa){
-        List<Tarefa> resultado = listaTarefa.stream()
-                .sorted(Comparator.reverseOrder())
-                .toList();
-        resultado.forEach(System.out::println);
+        System.out.println("\nInsira um valor de propriedade válido para listar [1 a 5]:\n");
+        int escolha;
+        while(true){
+            try {
+                escolha = Integer.parseInt(input.nextLine());
+                if(escolha >= 1 && escolha <= 5){
+                    break;
+                }
+            } catch (Exception e){
+                System.out.println("Valor inválido para listar\n");
+            }
+            System.out.println("Insira um valor entre 1 e 5");
+        }
+
+        final int escolhaFinal = escolha;
+
+        Stream<Tarefa> resultado = listaTarefa.stream()
+                .filter(tarefa -> tarefa.getPrioridade() == escolhaFinal)
+                .sorted(Comparator.reverseOrder());
+                resultado.forEach(System.out::println);
     }
 
     public void listarPorStatus(ArrayList<Tarefa> listaTarefa){
-        List<Tarefa> resultado = listaTarefa.stream()
-                .sorted(Comparator.comparing(Tarefa::getStatus).reversed())
-                .toList();
+        System.out.println("\nInsira um valor válido de Status: To do, Doing, Done\n");
+        String escolha;
 
-        resultado.forEach(System.out::println);
+        Status status = new Status();
+
+        while(true){
+            try{
+                escolha = input.nextLine();
+                if(status.validarPropriedade(escolha)){
+                    break;
+                }
+            }catch (Exception e){
+                System.out.println("\nInsira um Status válido");
+            }
+            System.out.println("Valores válidos: To do, Doing, Done\n");
+        }
+
+        final String escolhaFinal = escolha;
+
+        Stream<Tarefa> resultado = listaTarefa.stream()
+                .filter(tarefa -> tarefa.getStatus().getStatusTarefa().equalsIgnoreCase(escolhaFinal));
+                resultado.forEach(System.out::println);
+
+
     }
 
     public void executarOpcao(int opcao, Menu menu, ArrayList<Tarefa> tarefas, Categoria categoria){
         switch (opcao) {
+            case 0: break;
             case 1: {
                 Tarefa novatarefa = menu.criarTarefa(categoria);
                 if (novatarefa != null) {
@@ -281,15 +331,12 @@ public class Menu {
             case 3: mostrarTarefas(tarefas); break;
             case 4: categoria.mostrarCategorias(); break;
             case 5: criarCategoria(categoria); break;
-            case 6: Collections.sort(tarefas); break;
-            case 7: {
-                String categoriaEscolhida = obterCategoriaDesejada(categoria);
-                listarPorCategoria(tarefas, categoriaEscolhida);
-            }
-                break;
-            case 8: listarPorPrioridade(tarefas); break;
-            case 9: listarPorStatus(tarefas); break;
-            case 10: break;
+            case 6: listarPorCategoria(tarefas, categoria); break;
+            case 7: listarPorPrioridade(tarefas); break;
+            case 8: listarPorStatus(tarefas); break;
+            case 9: ordenarPorPrioridade(tarefas); break;
+            case 10: ordenarPorStatus(tarefas); break;
+
         }
     }
 
