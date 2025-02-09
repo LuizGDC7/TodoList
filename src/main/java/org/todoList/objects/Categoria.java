@@ -33,4 +33,13 @@ public class Categoria {
         }
     }
 
+    public boolean categoriaValida(String candidata){
+        for (String categoria : this.categorias) {
+            if (candidata.equals(categoria)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

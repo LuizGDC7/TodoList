@@ -35,21 +35,25 @@ public class Status implements Comparable<Status> {
 
     }
 
+    public String getStatusWithColor(){
+        return switch (this.statusTarefa) {
+            case TODO -> getTodo();
+            case DOING -> getDoing();
+            case DONE -> getDone();
+            default -> "Error";
+        };
+    }
+
     public String getStatusTarefa() {
-        if (statusTarefa.equals(TODO)) {
-            return this.getTodo();
-        }else if(statusTarefa.equals(DOING)) {
-            return this.getDoing();
-        }
-        return this.getDone();
+        return this.statusTarefa;
     }
 
     @Override
     public int compareTo(Status otherStatus){
         HashMap<String, Integer> map = new HashMap<>();
-        map.put("TODO", 2);
-        map.put("DOING", 1);
-        map.put("DONE", 0);
+        map.put(TODO, 2);
+        map.put(DOING, 1);
+        map.put(DONE, 0);
 
         int myStatusNumber = map.get(this.statusTarefa);
         int otherStatusNumber = map.get(otherStatus.getStatusTarefa());

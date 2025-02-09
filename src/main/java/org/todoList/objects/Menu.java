@@ -3,6 +3,7 @@ package org.todoList.objects;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Menu {
 
@@ -225,6 +226,48 @@ public class Menu {
         }
     }
 
+    public String obterCategoriaDesejada(Categoria categoria){
+
+        System.out.println("Essas são as categorias cadastradas:\n");
+        categoria.mostrarCategorias();
+        System.out.println("Insira uma categoria desejada:\n");
+        String categoriaEscolhida = null;
+        while(true){
+            try{
+                categoriaEscolhida = input.nextLine();
+                if(categoria.categoriaValida(categoriaEscolhida)){
+                    return categoriaEscolhida;
+                }
+                System.out.println("\nDigite uma categoria válida\n");
+            } catch (Exception e) {
+                System.out.println("Insira categoria válida\n");
+            }
+        }
+    }
+
+    public void listarPorCategoria(ArrayList<Tarefa> listaTarefa, String categoria){
+        List<Tarefa> resultado = listaTarefa.stream()
+                .filter(tarefa -> tarefa.getCategoria().equalsIgnoreCase(categoria))
+                .collect(Collectors.toList());
+
+        resultado.forEach(System.out::println);
+    }
+
+    public void listarPorPrioridade(ArrayList<Tarefa> listaTarefa){
+        List<Tarefa> resultado = listaTarefa.stream()
+                .sorted(Comparator.reverseOrder())
+                .toList();
+        resultado.forEach(System.out::println);
+    }
+
+    public void listarPorStatus(ArrayList<Tarefa> listaTarefa){
+        List<Tarefa> resultado = listaTarefa.stream()
+                .sorted(Comparator.comparing(Tarefa::getStatus).reversed())
+                .toList();
+
+        resultado.forEach(System.out::println);
+    }
+
     public void executarOpcao(int opcao, Menu menu, ArrayList<Tarefa> tarefas, Categoria categoria){
         switch (opcao) {
             case 1: {
@@ -234,25 +277,22 @@ public class Menu {
                 }
             }
                 break;
-            case 2: deletarTarefa(tarefas);
+            case 2: deletarTarefa(tarefas); break;
+            case 3: mostrarTarefas(tarefas); break;
+            case 4: categoria.mostrarCategorias(); break;
+            case 5: criarCategoria(categoria); break;
+            case 6: Collections.sort(tarefas); break;
+            case 7: {
+                String categoriaEscolhida = obterCategoriaDesejada(categoria);
+                listarPorCategoria(tarefas, categoriaEscolhida);
+            }
                 break;
-            case 3: mostrarTarefas(tarefas);
-                break;
-            case 4: categoria.mostrarCategorias();
-                break;
-            case 5: criarCategoria(categoria);
-                break;
-            case 6:
-                Collections.sort(tarefas);
-                break;
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-                break;
-
-
+            case 8: listarPorPrioridade(tarefas); break;
+            case 9: listarPorStatus(tarefas); break;
+            case 10: break;
         }
     }
+
+
 
 }

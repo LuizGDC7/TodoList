@@ -1,7 +1,12 @@
 package org.todoList.objects;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Tarefa implements Comparable<Tarefa> {
     private String nome;
@@ -79,14 +84,16 @@ public class Tarefa implements Comparable<Tarefa> {
 
     @Override
     public String toString() {
-        String retorno = "Nome: " + getNome() +
+         return "\nNome: " + getNome() +
                 "\nDescrição: " + getDescricao() +
                 "\nData final: " + getDataTermino() +
                 "\nPrioridade: " + getPrioridade() +
-                "\nCategoria: " + getCategoria()
-                + "\nStatus: " + getStatus().getStatusTarefa();
+                "\nCategoria: " + getCategoria() +
+                "\nStatus: " + getStatus().getStatusWithColor() +
+                "\n";
 
-        return retorno;
     }
+
+
 
 }
