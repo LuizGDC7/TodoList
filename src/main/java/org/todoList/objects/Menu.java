@@ -27,14 +27,16 @@ public class Menu {
                 "0 - Sair\n" +
                 "1 - Adicionar nova tarefa\n" +
                 "2 - Deletar tarefa\n" +
-                "3 - Vizualizar tarefas\n" +
-                "4 - Vizualizar categorias\n" +
-                "5 - Adicionar categoria\n" +
-                "6 - Listar tarefas por Categoria\n" +
-                "7 - Listar tarefas por Prioridade\n" +
-                "8 - Listar tarefas por Status\n" +
-                "9 - Ordenar por prioridade\n" +
-                "10 - Ordenar por Status\n"
+                "3 - Alterar tarefa\n" +
+                "4 - Vizualizar tarefas\n" +
+                "5 - Vizualizar categorias\n" +
+                "6 - Adicionar categoria\n" +
+                "7 - Listar tarefas por Categoria\n" +
+                "8 - Listar tarefas por Prioridade\n" +
+                "9 - Listar tarefas por Status\n" +
+                "10 - Ordenar por prioridade\n" +
+                "11 - Ordenar por Status\n" +
+                "12 - Mostrar quantidade de tarefas por estado\n"
         );
 
         int escolha = 0;
@@ -42,12 +44,12 @@ public class Menu {
         while(true){
             try {
                 escolha = Integer.parseInt(input.nextLine());
-                if(escolha < 0 || escolha > 11){
+                if(escolha < 0 || escolha > 12){
                     throw new java.lang.RuntimeException("\nErro\n");
                 }
                 break;
             }catch(Exception e){
-                System.out.println("\nPor favor, escolha um número entre 0 e 11\n");
+                System.out.println("\nPor favor, escolha um número entre 0 e 12\n");
             }
         }
 
@@ -215,6 +217,88 @@ public class Menu {
         }
     }
 
+    public void alterarTarefa(List<Tarefa> tarefas, Categoria categoria){
+        System.out.println("Escolha um número de tarefa a ser deletado, escolha qualquer outro para cancelar:\n");
+        int escolha;
+        for(int c = 0; c < tarefas.size(); c++){
+            System.out.println(String.format("[%d] - ", c) + tarefas.get(c).getNome());
+        }
+        while(true){
+            try{
+                escolha = Integer.parseInt(input.nextLine());
+                break;
+            } catch (Exception e){
+                System.out.println("\nDigite um número inteiro adequado\n");
+            }
+        }
+
+        if(escolha >= 0 && escolha < tarefas.size()){
+            Tarefa tarefaAlterada = tarefas.get(escolha);
+
+            while(true){
+                String frase;
+                Date data;
+                Status novoStatus = null;
+                int valorNumerico;
+                System.out.println("Valores atuais da tarefa são:\n" + tarefaAlterada);
+                System.out.println("Insira o que deseja alterar:\n\n" +
+                        "1 - Nome da tarefa\n" +
+                        "2 - Descrição da tarefa\n" +
+                        "3 - Data de término da tarefa\n" +
+                        "4 - Prioridade da tarefa\n" +
+                        "5 - Categoria da tarefa\n" +
+                        "6 - Alterar estado da tarefa\n" +
+                        "Qualquer outro número - Estou satisfeito\n"
+                );
+
+                int opcao = 0;
+                try{
+                    opcao = Integer.parseInt(input.nextLine());
+                }catch (Exception e){
+                    System.out.println("Insira um número adequado\n");
+                }
+
+                if(opcao >= 1 && opcao <= 6){
+                    switch(opcao){
+                        case 1: {
+                            frase = obterStringTarefa("Insira novo nome da tarefa");
+                            tarefaAlterada.setNome(frase);
+                        } break;
+                        case 2: {
+                            frase = obterStringTarefa("Insira nova descrição da tarefa");
+                            tarefaAlterada.setDescricao(frase);
+                        } break;
+                        case 3: {
+                            data = obterDataTarefa();
+                            tarefaAlterada.setDataTermino(data);
+                        } break;
+                        case 4: {
+                            valorNumerico = obterIntTarefa("Insira nova prioridade da tarefa [1 - 5]");
+                            tarefaAlterada.setPrioridade(valorNumerico);
+                        } break;
+                        case 5: {
+                            frase = obterCategoriaTarefa(categoria);
+                            tarefaAlterada.setCategoria(frase);
+                        } break;
+                        case 6: {
+                            novoStatus = obterStatus("Insira novo estado da tarefa [To do, Doing, Done]");
+                            tarefaAlterada.setStatus(novoStatus);
+                        }
+                    }
+                }else{
+                    break;
+                }
+
+                tarefas.set(escolha, tarefaAlterada);
+
+            }
+
+            System.out.println("\nTarefa alterada com sucesso!\n");
+        }
+
+
+    }
+
     public void criarCategoria(Categoria categoria){
         System.out.println("Essas são as atuais categorias:\n");
         categoria.mostrarCategorias();
@@ -228,6 +312,21 @@ public class Menu {
         if(novaCategoria != null && !novaCategoria.equals("ESC")){
             categoria.addCategoria(novaCategoria);
         }
+    }
+
+    public Status obterStatus(String mensagem){
+        System.out.println(mensagem);
+        String escolha = "";
+        Status status = new Status();
+        while(true){
+            escolha = input.nextLine();
+            if(status.validarPropriedade(escolha)){
+                status.setStatus(escolha);
+                break;
+            }
+            System.out.println("Estado não válido");
+        }
+        return status;
     }
 
     public String obterCategoriaDesejada(Categoria categoria){
@@ -318,6 +417,23 @@ public class Menu {
 
     }
 
+    public void mostrarQuantidadeTarefasPorEstado(ArrayList<Tarefa> listaTarefa){
+        int[] quantidadeDeTarefasPorEstado = {0, 0, 0};
+        String[] estados = {Status.TODO, Status.DOING, Status.DONE};
+        for(Tarefa tarefa : listaTarefa){
+            for(int i = 0; i < estados.length; i++){
+                if(tarefa.getStatus().getStatusTarefa().equalsIgnoreCase(estados[i])){
+                    quantidadeDeTarefasPorEstado[i]++;
+                }
+            }
+        }
+
+        for(int i = 0; i < quantidadeDeTarefasPorEstado.length; i++){
+            System.out.println(String.format("Quantidade de tarefas por estado [%s]: " + quantidadeDeTarefasPorEstado[i], estados[i]));
+        }
+        System.out.println("\n");
+    }
+
     public void executarOpcao(int opcao, Menu menu, ArrayList<Tarefa> tarefas, Categoria categoria){
         switch (opcao) {
             case 0: break;
@@ -329,17 +445,22 @@ public class Menu {
             }
                 break;
             case 2: deletarTarefa(tarefas); break;
-            case 3: mostrarTarefas(tarefas); break;
-            case 4: categoria.mostrarCategorias(); break;
-            case 5: criarCategoria(categoria); break;
-            case 6: listarPorCategoria(tarefas, categoria); break;
-            case 7: listarPorPrioridade(tarefas); break;
-            case 8: listarPorStatus(tarefas); break;
-            case 9: ordenarPorPrioridade(tarefas); break;
-            case 10: ordenarPorStatus(tarefas); break;
+            case 3: alterarTarefa(tarefas, categoria); break;
+            case 4: mostrarTarefas(tarefas); break;
+            case 5: categoria.mostrarCategorias(); break;
+            case 6: criarCategoria(categoria); break;
+            case 7: listarPorCategoria(tarefas, categoria); break;
+            case 8: listarPorPrioridade(tarefas); break;
+            case 9: listarPorStatus(tarefas); break;
+            case 10: ordenarPorPrioridade(tarefas); break;
+            case 11: ordenarPorStatus(tarefas); break;
+            case 12: mostrarQuantidadeTarefasPorEstado(tarefas); break;
 
         }
     }
+
+
+
 
 
 

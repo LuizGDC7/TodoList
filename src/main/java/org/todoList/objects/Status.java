@@ -74,4 +74,13 @@ public class Status implements Comparable<Status>, Propertie<String> {
         return false;
     }
 
+    public void setStatus(String novoStatus){
+        String[] estados = {TODO, DOING, DONE};
+        for (String estado : estados) {
+            if (estado.equalsIgnoreCase(novoStatus)) {
+                this.statusTarefa = estado;
+            }
+        }
+    }
+
 }
