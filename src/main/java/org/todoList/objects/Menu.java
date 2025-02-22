@@ -4,6 +4,8 @@ import org.todoList.interfaces.Propertie;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -65,7 +67,8 @@ public class Menu {
                "3 - Inserir data de término da tarefa\n" +
                "4 - Inserir nível de prioridade da tarefa\n" +
                "5 - Inserir categoria da tarefa\n" +
-               "6 - Cancelar"
+               "6 - Inserir alarme (opcional)\n" +
+               "7 - Cancelar"
         );
         int escolha = 0;
 
@@ -77,7 +80,7 @@ public class Menu {
                 }
                 break;
             }catch(Exception e){
-                System.out.println("\nPor favor, insira uma opção entre 1 e 6\n");
+                System.out.println("\nPor favor, insira uma opção entre 1 e 7\n");
             }
         }
         return escolha;
@@ -98,21 +101,32 @@ public class Menu {
         return nome;
     }
 
-    public Date obterDataTarefa(){
+    public LocalDate obterDataTarefa(){
 
-        SimpleDateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date data;
+        LocalDate data;
         while(true){
             try {
-                System.out.println("Digite a data de fim da tarefa no formato DD/MM/yyyy:\n");
+                System.out.println("Digite a data de fim da tarefa no formato yyyy-MM-dd:\n");
                 String leitura = input.nextLine();
-                data = dataFormat.parse(leitura);
-                break;
+                data = LocalDate.parse(leitura);
+                return data;
             }catch (Exception e){
                 System.out.println("\nInsira data no formato adequado\n");
             }
         }
-        return data;
+    }
+
+    public LocalTime obterHorarioAlarme(){
+        LocalTime horaAlarme;
+        while(true){
+            try {
+                System.out.println("Digite a hora do alarme no formato HH:mm\n");
+                horaAlarme = LocalTime.parse(input.nextLine());
+                return horaAlarme;
+            } catch (Exception e) {
+                System.out.println("\nInsira hora no formato HH:mm\n");
+            }
+        }
     }
 
     public int obterIntTarefa(String mensagem){
@@ -154,18 +168,18 @@ public class Menu {
 
     public Tarefa criarTarefa(Categoria categorias){
         String nome = null, descricao = null, categoriaEscolhida = null;
-        Date data = null;
+        LocalDate data = null;
         Integer prioridade = null;
-        SimpleDateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy");
-
+        LocalTime hora = null;
         while(true){
 
             System.out.println("Dados inseridos até agora: \n\n" +
                     "nome: " + (nome == null ? "" : nome) + "\n" +
                     "descricao: " + (descricao == null ? "" : descricao) + "\n" +
-                    "Data: " + (data == null ? "" : dataFormat.format(data)) + "\n" +
+                    "Data: " + (data == null ? "" : data.toString()) + "\n" +
                     "prioridade: " + (prioridade == null ? "" : prioridade) + "\n" +
-                    "categoria:" + (categoriaEscolhida == null ? "" : categoriaEscolhida)
+                    "categoria:" + (categoriaEscolhida == null ? "" : categoriaEscolhida) + "\n" +
+                    "Alarme:" + (hora == null ? "" : hora.toString())
                     );
 
             switch(opcoesTarefa()){
@@ -179,8 +193,11 @@ public class Menu {
                     break;
                 case 5: categoriaEscolhida = obterCategoriaTarefa(categorias);
                     break;
-                case 6: return null;
+                case 6: hora = obterHorarioAlarme(); break;
+                case 7: return null;
             }
+
+            // Evitar comparações por null -> impede a localização de erros
 
             if(nome != null && descricao != null && data != null && prioridade != null && categoriaEscolhida != null){
                 break;
@@ -188,7 +205,7 @@ public class Menu {
 
         }
 
-        return new Tarefa(nome, descricao, data, prioridade, categoriaEscolhida, new Status(Status.TODO));
+        return new Tarefa(nome, descricao, data, prioridade, categoriaEscolhida, new Status(Status.TODO), hora);
     }
 
     public void mostrarTarefas(ArrayList<Tarefa> tarefa){
@@ -237,7 +254,7 @@ public class Menu {
 
             while(true){
                 String frase;
-                Date data;
+                LocalDate data;
                 Status novoStatus = null;
                 int valorNumerico;
                 System.out.println("Valores atuais da tarefa são:\n" + tarefaAlterada);
@@ -248,6 +265,7 @@ public class Menu {
                         "4 - Prioridade da tarefa\n" +
                         "5 - Categoria da tarefa\n" +
                         "6 - Alterar estado da tarefa\n" +
+                        "7 - Alterar alarme\n" +
                         "Qualquer outro número - Estou satisfeito\n"
                 );
 
@@ -258,7 +276,7 @@ public class Menu {
                     System.out.println("Insira um número adequado\n");
                 }
 
-                if(opcao >= 1 && opcao <= 6){
+                if(opcao >= 1 && opcao <= 7){
                     switch(opcao){
                         case 1: {
                             frase = obterStringTarefa("Insira novo nome da tarefa");
@@ -283,6 +301,10 @@ public class Menu {
                         case 6: {
                             novoStatus = obterStatus("Insira novo estado da tarefa [To do, Doing, Done]");
                             tarefaAlterada.setStatus(novoStatus);
+                        }; break;
+                        case 7: {
+                            LocalTime localTime = obterHorarioAlarme();
+                            tarefaAlterada.setHorarioAlarme(localTime);
                         }
                     }
                 }else{
@@ -458,10 +480,5 @@ public class Menu {
 
         }
     }
-
-
-
-
-
 
 }
