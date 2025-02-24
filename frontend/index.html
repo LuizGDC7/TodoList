@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <p>To do List</p>
+        </div>
+
+        <nav>
+            <span>Adicionar tarefa</span>
+        </nav>
+    </header>
+    <main>
+
+        <form id="formularioTarefa">
+
+            <label for="nome">Nome da tarefa</label>
+            <input id="nome" name="nome"  type="text" required>
+
+            <label for="descricao">Descrição da tarefa</label>
+            <input id="descricao" name="descricao" type="text">
+
+            <label for="dataTermino">Data em que a tarefa termina</label>
+            <input id="dataTermino" name="dataTermino" type="date" required>
+
+            <label for="prioridade"></label>
+            <select name="prioridade" id="prioridade" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+
+            <label for="categoria">Categoria</label>
+            <input id="categoria" name="categoria" type="text">
+
+            <label for="status"></label>
+            <select name="status" id="status">
+                <option value="To Do">To Do</option>
+                <option value="Doing">Doing</option>
+                <option value="Done">Done</option>
+            </select>
+
+            <label for="alarme"></label >
+            <input id="alarme" name="alarme" type="time">
+
+            <button type="submit" id="enviarDados">
+                Enviar dados
+            </button>
+
+            <button type="cancelarNovaTarefa">Cancelar</button>
+        
+        </form>
+
+    </main>
+    <footer>
+        <div>
+            <p> &copy Luiz Guilherme Dias Catulio </p>
+            <a href="https://github.com/LuizGDC7">Github: LuizGDC7</a>
+        </div>
+    </footer>
+
+    <script src="js/crud.js">
+
+    </script>
+</body>
+</html>
