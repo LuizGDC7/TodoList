@@ -1,0 +1,36 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header{
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    height: 60px;
+}
+
+main{
+    flex: 1;
+    padding: 20px;
+    background-color: #f4f4f4;
+    overflow-y: auto;
+    
+}
+
+footer{
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    height: 50px;
+}

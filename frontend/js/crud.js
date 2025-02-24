@@ -1,19 +1,36 @@
-var tarefas = []
+import * as objetos from "./objetos.js";
+
+let tarefas = [new objetos.Tarefa("Anotar dados", "Preciso anotar dados até segunda", 3, "To Do", "Afazeres", "2025-02-26", "08:30"),
+    new objetos.Tarefa("Passear com os cachorros", "Passear com os cachorros", 2, "Doing", "Lazer", "2025-02-28", "07:30")
+]
 
 const adicionar = document.getElementById('adicionar');
 
-
 const main = document.getElementById("main");
+
+
+function atualizarMain(){
+
+    main.innerHTML = "";
+
+    if(tarefas.length > 0){
+        tarefas.forEach(
+            (tarefa) => {
+                main.innerHTML += objetos.htmlTarefa(tarefa)
+            }
+        )
+    }
+}
 
 function adicionarTarefas(novaTarefa) {
     tarefas.push(novaTarefa);
     console.log(tarefas);
+    atualizarMain();
 }
 
-
-adicionar.onclick = function mostrarFormulario() {
+function mostrarFormulario() {
     main.innerHTML = "";
-    adicionarFormulario(main);
+    objetos.adicionarFormulario(main);
     const formulario = document.getElementById('formularioTarefa');
 
     if (formulario) {
@@ -32,22 +49,16 @@ adicionar.onclick = function mostrarFormulario() {
             var estado = dados.get('status');
             var prioridade = dados.get('prioridade');
 
-            var novaTarefa = new Tarefa(nome, descricao, prioridade, estado, categoria, dataTermino, alarme);
+            var novaTarefa = new objetos.Tarefa(nome, descricao, prioridade, estado, categoria, dataTermino, alarme);
 
             adicionarTarefas(novaTarefa);
-            main.innerHTML = "";
 
         })
-
-        formulario.addEventListener("cancelarNovaTarefa", function (event) {
-            event.preventDefault();
-            main.innerHTML = "";
-        });
 
         const botaoCancelar = formulario.querySelector('button[type="button"]');
         if (botaoCancelar) {
             botaoCancelar.addEventListener("click", function () {
-                main.innerHTML = ""; // Limpa o formulário ao cancelar
+                atualizarMain(); // Limpa o formulário ao cancelar
             });
         }
 
@@ -55,3 +66,7 @@ adicionar.onclick = function mostrarFormulario() {
 
 
 }
+
+adicionar.addEventListener("click", mostrarFormulario);
+
+atualizarMain();

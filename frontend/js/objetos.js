@@ -1,4 +1,4 @@
-class Tarefa {
+export class Tarefa {
     #nome
     #dataTermino
     #prioridade
@@ -64,7 +64,7 @@ class Tarefa {
 
 }
 
-const adicionarFormulario = function (localAAdicionar) {
+export const adicionarFormulario = function (localAAdicionar) {
 
     localAAdicionar.innerHTML = `<form id="formularioTarefa">
 
@@ -107,47 +107,62 @@ const adicionarFormulario = function (localAAdicionar) {
             `
 }
 
-const objetoTarefa = function(nome, descricao, prioridade, estado, categoria, dataTermino, alarme){
-    
+
+export const htmlTarefa = function(novaTarefa){
+
+    var nome = novaTarefa.getNome();
+    var descricao = novaTarefa.getDescricao();
+    var prioridade = novaTarefa.getPrioridade();
+    var estado = novaTarefa.getEstado();
+    var categoria = novaTarefa.getCategoria();
+    var dataTermino = novaTarefa.getDataTermino();
+    var alarme = novaTarefa.getAlarme();
+
+    return `
     <div class="tarefa">
+        
         <div class="informacoesTarefa">
 
             <div class="informacoesPrimarias">
-                <div class="infoPrimaria">
-                    <p class="identificador">Nome</p>
-                    <p class="conteudo">{nome}</p>
+                <div class="infoPrimaria" id="identificadorNome">
+                    <p class="identificador" >Nome</p>
+                    <p class="conteudo">${nome}</p>
                 </div>
                 <div class="infoPrimaria">
                     <p class="identificador">Data de término</p>
-                    <p class="conteudo">{dataTermino}</p>
+                    <p class="conteudo">${dataTermino}</p>
                 </div>
                 <div class="infoPrimaria">
                     <p class="identificador">Prioridade</p>
-                    <p class="conteudo">{prioridade}</p>
+                    <p class="conteudo">${prioridade}</p>
                 </div>
                 <div class="infoPrimaria">
                     <p class="identificador">Estado</p>
-                    <p class="conteudo">{estado}</p>
+                    <p class="conteudo">${estado}</p>
                 </div>
                 <div class="infoPrimaria">
                     <p class="identificador">Alarme</p>
-                    <p class="conteudo">{alarme}</p>
+                    <p class="conteudo">${alarme}</p>
                 </div>
                 <div class="infoPrimaria">
                     <p class="identificador">Categoria</p>
-                    <p class="conteudo">{categoria}</p>
+                    <p class="conteudo">${categoria}</p>
                 </div>
             </div>
             <div class="informacoesSecundarias">
                 <div class="infoSecundaria">
                     <p class="identificador">Descrição</p>
-                    <p class="conteudo">{descricao}</p>
+                    <p class="conteudo">${descricao}</p>
                 </div>
             </div>
         </div>
         <div class="opcoesTarefa">
-
+            
         </div>
 
     </div>
+    `
+
 }
+
+
