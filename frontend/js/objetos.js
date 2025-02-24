@@ -6,6 +6,7 @@ export class Tarefa {
     #categoria
     #descricao
     #alarme
+    #id
 
     constructor(nome, descricao, prioridade, estado, categoria, dataTermino, alarme) {
         this.#nome = nome;
@@ -15,6 +16,7 @@ export class Tarefa {
         this.#categoria = categoria;
         this.#descricao = descricao;
         this.#alarme = alarme;
+        this.#id = Math.floor(Math.random() * 100000);
     }
 
     setnome(nome) {
@@ -61,6 +63,10 @@ export class Tarefa {
     getAlarme() {
         return this.#alarme;
     }
+    getId(){
+        return this.#id;
+    }
+
 
 }
 
@@ -108,7 +114,7 @@ export const adicionarFormulario = function (localAAdicionar) {
 }
 
 
-export const htmlTarefa = function(novaTarefa){
+export const htmlTarefa = function (novaTarefa) {
 
     var nome = novaTarefa.getNome();
     var descricao = novaTarefa.getDescricao();
@@ -117,9 +123,10 @@ export const htmlTarefa = function(novaTarefa){
     var categoria = novaTarefa.getCategoria();
     var dataTermino = novaTarefa.getDataTermino();
     var alarme = novaTarefa.getAlarme();
+    var id = novaTarefa.getId();
 
     return `
-    <div class="tarefa">
+    <div class="tarefa" id="tarefa-${id}">
         
         <div class="informacoesTarefa">
 
@@ -157,11 +164,20 @@ export const htmlTarefa = function(novaTarefa){
             </div>
         </div>
         <div class="opcoesTarefa">
-            
+            <button class="excluirTarefa" data-id="${id}">
+                <img src="./img/trash.png" alt="" />
+            </button>
+            <button class="alterarTarefa" data-id="${id}">
+                <img src="./img/edit.png" alt="" />
+            </button>
         </div>
 
     </div>
-    `
+    `;
+
+
+
+
 
 }
 

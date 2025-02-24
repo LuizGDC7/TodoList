@@ -58,6 +58,12 @@
 
 .opcoesTarefa{
     width: 35px;
-    background-color: red;
     position: relative;
+    display: flexbox;
+    flex-direction: column;
+    button{
+        width: fit-content;
+        height: fit-content;
+        background-color: transparent;
+    }
 }

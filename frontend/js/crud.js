@@ -16,9 +16,27 @@ function atualizarMain(){
     if(tarefas.length > 0){
         tarefas.forEach(
             (tarefa) => {
-                main.innerHTML += objetos.htmlTarefa(tarefa)
+                let novoHtmlTarefa = objetos.htmlTarefa(tarefa);
+                
+                main.innerHTML += novoHtmlTarefa;
             }
-        )
+        );
+
+        document.querySelectorAll('.excluirTarefa').forEach(
+            (botao) => {
+                botao.addEventListener('click', () => {
+                    const id = parseInt(botao.getAttribute('data-id'));
+                    excluirTarefa(id);
+                });
+            }
+        );
+
+        document.querySelectorAll('.alterarTarefa').forEach((botao) => {
+            botao.addEventListener('click', () => {
+                const id = parseInt(botao.getAttribute('data-id'));
+                alterarTarefa(id);
+            });
+        });
     }
 }
 
@@ -28,12 +46,36 @@ function adicionarTarefas(novaTarefa) {
     atualizarMain();
 }
 
-function mostrarFormulario() {
+function excluirTarefa(id){
+    tarefas = tarefas.filter((tarefa) => tarefa.getId() !== id);
+    atualizarMain();
+}
+
+function alterarTarefa(id){
+    const tarefa = tarefas.find((tarefa) => tarefa.getId() === id);
+    if(tarefa){
+        mostrarFormulario(tarefa);
+    }
+}
+
+function mostrarFormulario(tarefa = null) {
     main.innerHTML = "";
     objetos.adicionarFormulario(main);
     const formulario = document.getElementById('formularioTarefa');
 
     if (formulario) {
+
+        if (tarefa) {
+            formulario.querySelector('#nome').value = tarefa.getNome();
+            formulario.querySelector('#descricao').value = tarefa.getDescricao();
+            formulario.querySelector('#dataTermino').value = tarefa.getDataTermino();
+            formulario.querySelector('#alarme').value = tarefa.getAlarme();
+            formulario.querySelector('#categoria').value = tarefa.getCategoria();
+            formulario.querySelector('#status').value = tarefa.getEstado();
+            formulario.querySelector('#prioridade').value = tarefa.getPrioridade();
+        }
+
+
 
         formulario.addEventListener("submit", function (event) {
 
@@ -41,18 +83,30 @@ function mostrarFormulario() {
 
             const dados = new FormData(formulario);
 
-            var nome = dados.get('nome');
-            var descricao = dados.get('descricao');
-            var dataTermino = dados.get('dataTermino');
-            var alarme = dados.get('alarme');
-            var categoria = dados.get('categoria');
-            var estado = dados.get('status');
-            var prioridade = dados.get('prioridade');
+            const nome = dados.get('nome');
+            const descricao = dados.get('descricao');
+            const dataTermino = dados.get('dataTermino');
+            const alarme = dados.get('alarme');
+            const categoria = dados.get('categoria');
+            const estado = dados.get('status');
+            const prioridade = dados.get('prioridade');
 
-            var novaTarefa = new objetos.Tarefa(nome, descricao, prioridade, estado, categoria, dataTermino, alarme);
+            if(tarefa){
 
-            adicionarTarefas(novaTarefa);
+                tarefa.setnome(nome);
+                tarefa.setdescricao(descricao);
+                tarefa.setdataTermino(dataTermino);
+                tarefa.setalarme(alarme);
+                tarefa.setcategoria(categoria);
+                tarefa.setestado(estado);
+                tarefa.setprioridade(prioridade);
 
+            }else{
+                const novaTarefa = new objetos.Tarefa(nome, descricao, prioridade, estado, categoria, dataTermino, alarme);
+                adicionarTarefas(novaTarefa);
+            }
+
+            atualizarMain();
         })
 
         const botaoCancelar = formulario.querySelector('button[type="button"]');
