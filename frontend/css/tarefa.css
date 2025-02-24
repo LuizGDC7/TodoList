@@ -8,6 +8,8 @@
     flex-direction: row;
     margin: 5px;
     position: relative;
+    width: 100%;
+    max-width: 80vw;
 }
 
 .informacoesTarefa{

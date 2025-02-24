@@ -72,45 +72,65 @@ export class Tarefa {
 
 export const adicionarFormulario = function (localAAdicionar) {
 
-    localAAdicionar.innerHTML = `<form id="formularioTarefa">
+    localAAdicionar.innerHTML = `<form id="formularioTarefa" class="formularioTarefa">
 
-            <label for="nome">Nome da tarefa</label>
-            <input id="nome" name="nome"  type="text" required>
+            <div class="campoTarefa"> 
+                <label for="nome">Nome da tarefa</label>
+                <input id="nome" name="nome" class="inputFormulario" type="text" required>
+            </div>
 
-            <label for="descricao">Descrição da tarefa</label>
-            <input id="descricao" name="descricao" type="text">
+            <div class="campoTarefa"> 
+                <label for="descricao">Descrição da tarefa</label>
+                <input id="descricao" class="inputFormulario" name="descricao" type="text">
+            </div>
 
-            <label for="dataTermino">Data em que a tarefa termina</label>
-            <input id="dataTermino" name="dataTermino" type="date" required>
+            <div class="campoTarefa"> 
+                <label for="dataTermino">Data em que a tarefa termina</label>
+                <input id="dataTermino" class="inputFormulario" name="dataTermino" type="date" required>
+            </div>
 
-            <label for="prioridade"></label>
-            <select name="prioridade" id="prioridade" required>
+            <div class="campoTarefa"> 
+                <label for="prioridade">Prioridade da tarefa</label>
+                <select name="prioridade" id="prioridade" required class="inputFormulario">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
             </select>
+            </div>
 
-            <label for="categoria">Categoria</label>
-            <input id="categoria" name="categoria" type="text">
+            <div class="campoTarefa"> 
+                <label for="categoria">Categoria</label>
+            <input id="categoria" class="inputFormulario" name="categoria" type="text">
+            </div>
 
-            <label for="status"></label>
-            <select name="status" id="status">
+            <div class="campoTarefa"> 
+                <label for="status">Status inicial da tarefa</label>
+            <select name="status" id="status" class="inputFormulario">
                 <option value="To Do">To Do</option>
                 <option value="Doing">Doing</option>
                 <option value="Done">Done</option>
             </select>
+            </div>
 
-            <label for="alarme"></label >
-            <input id="alarme" name="alarme" type="time">
+            <div class="campoTarefa"> 
+                <label for="alarme">Alarme para tarefa</label >
+            <input id="alarme" class="inputFormulario" name="alarme" type="time">
+            </div>
+
+            <div class="separador"> 
+
             
-            <button type="submit" id="enviarDados">
+                <button type="submit" id="enviarDados">
                 Enviar dados
             </button>
-            <button type="button">Cancelar</button>
+            <button type="button" id="cancelarFormulario">Cancelar</button>
+            </div>
+            
+            
             </form>
-            `
+            `;
 }
 
 

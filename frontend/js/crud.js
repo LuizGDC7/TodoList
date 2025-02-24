@@ -59,6 +59,7 @@ function alterarTarefa(id){
 }
 
 function mostrarFormulario(tarefa = null) {
+
     main.innerHTML = "";
     objetos.adicionarFormulario(main);
     const formulario = document.getElementById('formularioTarefa');
@@ -109,7 +110,8 @@ function mostrarFormulario(tarefa = null) {
             atualizarMain();
         })
 
-        const botaoCancelar = formulario.querySelector('button[type="button"]');
+        const botaoCancelar = formulario.querySelector('#cancelarFormulario');
+
         if (botaoCancelar) {
             botaoCancelar.addEventListener("click", function () {
                 atualizarMain(); // Limpa o formulário ao cancelar
@@ -121,6 +123,6 @@ function mostrarFormulario(tarefa = null) {
 
 }
 
-adicionar.addEventListener("click", mostrarFormulario);
+adicionar.addEventListener("click", () =>  mostrarFormulario(null));
 
 atualizarMain();

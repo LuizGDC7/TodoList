@@ -1,0 +1,42 @@
+.formularioTarefa{
+    display: flexbox;
+    flex-direction: column;
+    height: 250px;
+    width: 450px;
+    position: absolute;
+    background-color: lightblue;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.campoTarefa{
+    width: auto;
+    height: fit-content;
+    margin: 5px;
+    display: flex;
+
+    label{
+        flex: 1;
+    }
+
+}
+
+.inputFormulario{
+    width: 180px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.separador{
+
+    display: flex;
+    justify-content: space-around;
+    border: 10px;
+    width: 100%;
+
+    button{
+        width: 125px;
+        border-radius: 3px;
+        margin: 15px 0px;
+    }
+}
