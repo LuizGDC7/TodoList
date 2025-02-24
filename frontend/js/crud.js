@@ -1,97 +1,57 @@
 var tarefas = []
 
-class Tarefa{
-    #nome
-    #dataTermino
-    #prioridade
-    #estado
-    #categoria
-    #descricao
-    #alarme
+const adicionar = document.getElementById('adicionar');
 
-    constructor(nome, descricao, prioridade, estado, categoria, dataTermino, alarme){
-        this.#nome = nome;
-        this.#dataTermino = dataTermino;
-        this.#prioridade = prioridade;
-        this.#estado = estado;
-        this.#categoria = categoria;
-        this.#descricao = descricao;
-        this.#alarme = alarme;
-    }
 
-    setnome(nome){
-        this.#nome = nome;
-    }
-    setdataTermino(dataTermino){
-        this.#dataTermino = dataTermino;
-    }
-    setprioridade(prioridade){
-        this.#prioridade = prioridade;
-    }
-    setestado(estado){
-        this.#estado = estado;
-    }
-    setcategoria(categoria){
-        this.#categoria = categoria;
-    }
-    setdescricao(descricao){
-        this.#descricao = descricao;
-    }
-    setalarme(alarme){
-        this.#alarme = alarme;
-    }
-    
+const main = document.getElementById("main");
 
-    getNome(){
-        return this.#nome;
-    }
-    getDataTermino(){
-        return this.#dataTermino;
-    }
-    getPrioridade(){
-        return this.#prioridade;
-    }
-    getEstado(){
-        return this.#estado;
-    }
-    getCategoria(){
-        return this.#categoria;
-    }
-    getDescricao(){
-        return this.#descricao;
-    }
-    getAlarme(){
-        return this.#alarme;
-    }
-
-}
-
-const formulario = document.getElementById('formularioTarefa')
-
-function adicionarTarefas(novaTarefa){
+function adicionarTarefas(novaTarefa) {
     tarefas.push(novaTarefa);
     console.log(tarefas);
 }
 
-formulario.addEventListener("submit", function(event){
-    
-    event.preventDefault();
 
-    const dados = new FormData(formulario);
+adicionar.onclick = function mostrarFormulario() {
+    main.innerHTML = "";
+    adicionarFormulario(main);
+    const formulario = document.getElementById('formularioTarefa');
 
-    var nome =          dados.get('nome');
-    var descricao =     dados.get('descricao');
-    var dataTermino =   dados.get('dataTermino');
-    var alarme =        dados.get('alarme');
-    var categoria =     dados.get('categoria');
-    var estado =        dados.get('status');
-    var prioridade =    dados.get('prioridade');
+    if (formulario) {
 
-    var novaTarefa = new Tarefa(nome, descricao, prioridade, estado, categoria, dataTermino, alarme);
+        formulario.addEventListener("submit", function (event) {
 
-    adicionarTarefas(novaTarefa);
+            event.preventDefault();
 
-})
+            const dados = new FormData(formulario);
+
+            var nome = dados.get('nome');
+            var descricao = dados.get('descricao');
+            var dataTermino = dados.get('dataTermino');
+            var alarme = dados.get('alarme');
+            var categoria = dados.get('categoria');
+            var estado = dados.get('status');
+            var prioridade = dados.get('prioridade');
+
+            var novaTarefa = new Tarefa(nome, descricao, prioridade, estado, categoria, dataTermino, alarme);
+
+            adicionarTarefas(novaTarefa);
+            main.innerHTML = "";
+
+        })
+
+        formulario.addEventListener("cancelarNovaTarefa", function (event) {
+            event.preventDefault();
+            main.innerHTML = "";
+        });
+
+        const botaoCancelar = formulario.querySelector('button[type="button"]');
+        if (botaoCancelar) {
+            botaoCancelar.addEventListener("click", function () {
+                main.innerHTML = ""; // Limpa o formulário ao cancelar
+            });
+        }
+
+    }
 
 
-
+}
